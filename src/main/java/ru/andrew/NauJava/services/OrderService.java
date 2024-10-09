@@ -1,12 +1,14 @@
 package ru.andrew.NauJava.services;
 
+import ru.andrew.NauJava.models.Item;
 import ru.andrew.NauJava.models.Order;
+import ru.andrew.NauJava.models.User;
 
 import java.util.List;
 
 public interface OrderService {
-    Long createUser(String userName, List<String> items);
+    Long createOrder(User user, List<Item> items, Double fullPrice);
     Order findById(Long id);
     void deleteById(Long id);
-    void updateOrder(Long id, List<String> items);
+    void updateOrder(Long id, List<Item> items, Double fullPrice);
 }

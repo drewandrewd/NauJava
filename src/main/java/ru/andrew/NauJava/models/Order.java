@@ -1,15 +1,19 @@
 package ru.andrew.NauJava.models;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
 @Data
+@ToString
 public class Order {
 
     private Long id;
 
-    private String userName;
+    private User user;
 
-    private List<String> items;
+    private List<Item> items;
+
+    private Double fullPrice;
 }

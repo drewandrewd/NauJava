@@ -1,9 +1,10 @@
 package ru.andrew.NauJava.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import ru.andrew.NauJava.models.Item;
 import ru.andrew.NauJava.models.Order;
+import ru.andrew.NauJava.models.User;
 import ru.andrew.NauJava.repositories.OrderRepository;
 
 import java.util.List;
@@ -21,11 +22,12 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Long createUser(String userName, List<String> items) {
+    public Long createOrder(User user, List<Item> items, Double fullPrice) {
         Order order = new Order();
-        order.setId(new Random().nextLong());
-        order.setUserName(userName);
+        order.setId(new Random().nextLong() >>> 1);
+        order.setUser(user);
         order.setItems(items);
+        order.setFullPrice(fullPrice);
         orderRepository.create(order);
         return order.getId();
     }
@@ -41,9 +43,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrder(Long id, List<String> items) {
+    public void updateOrder(Long id, List<Item> items, Double fullPrice) {
         Order order = orderRepository.read(id);
         order.setItems(items);
+        order.setFullPrice(fullPrice);
         orderRepository.update(order, id);
     }
 }
