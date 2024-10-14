@@ -24,29 +24,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Long createOrder(User user, List<Item> items, Double fullPrice) {
         Order order = new Order();
-        order.setId(new Random().nextLong() >>> 1);
         order.setUser(user);
         order.setItems(items);
         order.setFullPrice(fullPrice);
-        orderRepository.create(order);
+        orderRepository.save(order);
         return order.getId();
     }
 
     @Override
     public Order findById(Long id) {
-        return orderRepository.read(id);
+        return orderRepository.findById(id).get();
     }
 
     @Override
     public void deleteById(Long id) {
-        orderRepository.delete(id);
+        orderRepository.deleteById(id);
     }
 
     @Override
     public void updateOrder(Long id, List<Item> items, Double fullPrice) {
-        Order order = orderRepository.read(id);
+        Order order = orderRepository.findById(id).get();
         order.setItems(items);
         order.setFullPrice(fullPrice);
-        orderRepository.update(order, id);
+        orderRepository.save(order);
     }
 }

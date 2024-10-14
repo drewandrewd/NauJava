@@ -21,18 +21,17 @@ public class UserServiceImpl implements UserService {
     public String createUser(String userName) {
         User user = new User();
         user.setName(userName);
-        user.setId(new Random().nextLong() >>> 1);
-        userRepository.create(user);
+        userRepository.save(user);
         return user.getName();
     }
 
     @Override
-    public User findByName(String name) {
-        return userRepository.read(name);
+    public User findById(Long id) {
+        return userRepository.findById(String.valueOf(id)).get();
     }
 
     @Override
-    public void deleteByName(String name) {
-        userRepository.delete(name);
+    public void deleteById(Long id) {
+        userRepository.deleteById(String.valueOf(id));
     }
 }

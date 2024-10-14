@@ -36,11 +36,11 @@ public class CommandProcessor
                 List<Item> list = new ArrayList<>();
                 double fullPrice = 0;
                 for (int i = 0; i < Integer.parseInt(cmd[2]); i++) {
-                    Item item = itemService.findByName(cmd[3 + i]);
+                    Item item = itemService.findById(Long.parseLong(cmd[3 + i]));
                     list.add(item);
                     fullPrice += item.getPrice();
                 }
-                long id = orderService.createOrder(userService.findByName(cmd[1]), list, fullPrice);
+                long id = orderService.createOrder(userService.findById(Long.parseLong(cmd[1])), list, fullPrice);
                 System.out.println("Заказ успешно добавлен...");
                 System.out.printf("Id: %d\n", id);
             }
@@ -55,7 +55,7 @@ public class CommandProcessor
                 List<Item> list = new ArrayList<>();
                 double fullPrice = 0;
                 for (int i = 0; i < Integer.parseInt(cmd[2]); i++) {
-                    Item item = itemService.findByName(cmd[i + 3]);
+                    Item item = itemService.findById(Long.parseLong(cmd[i + 3]));
                     list.add(item);
                     fullPrice += item.getPrice();
                 }
