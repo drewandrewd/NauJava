@@ -30,19 +30,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Long createItem(String name, String description, Integer weight, Double price) {
+    public void createItem(String name, String description, Integer weight, Double price) {
         Item item = new Item();
         item.setName(name);
         item.setDescription(description);
         item.setWeight(weight);
         item.setPrice(price);
         itemRepository.save(item);
-        return item.getId();
     }
 
     @Override
     public Item findById(Long id) {
-        return itemRepository.findById(String.valueOf(id)).get();
+        return itemRepository.findById(String.valueOf(id)).orElse(new Item());
     }
 
     @Override
@@ -52,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void updateItem(Long id, String name, String description, Integer weight, Double price) {
-        Item item = itemRepository.findById(String.valueOf(id)).get();
+        Item item = findById(id);
         item.setDescription(description);
         item.setWeight(weight);
         item.setPrice(price);

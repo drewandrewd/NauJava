@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ru.andrew.NauJava.models.Item;
+import ru.andrew.NauJava.models.Order;
 import ru.andrew.NauJava.repositories.ItemRepository;
 import ru.andrew.NauJava.services.ItemServiceImpl;
 
@@ -34,11 +35,12 @@ public class ItemServiceImplTest {
         Item item = new Item("name", "description", 1, 100.0);
         item.setId(1L);
 
-        when(itemRepository.save(any(Item.class))).thenReturn(item);
+        when(itemRepository.save(any(Item.class))).thenAnswer(invocation -> {
+            Item savedItem = invocation.getArgument(0);
+            savedItem.setId(1L);
+            return savedItem;
+        });
 
-        Long itemId = itemService.createItem("name", "description", 1, 100.0);
-
-        assertEquals(1L, itemId);
         verify(itemRepository, times(1)).save(any(Item.class));
     }
 

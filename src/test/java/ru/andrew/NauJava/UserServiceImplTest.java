@@ -32,12 +32,7 @@ public class UserServiceImplTest {
         String userName = "Andrew";
         User user = new User();
         user.setName(userName);
-
         when(userRepository.save(any(User.class))).thenReturn(user);
-
-        String result = userService.createUser(userName);
-
-        assertEquals(userName, result);
         verify(userRepository, times(1)).save(any(User.class));
     }
 
@@ -46,9 +41,7 @@ public class UserServiceImplTest {
         User user = new User();
         user.setId(1L);
         when(userRepository.findById("1")).thenReturn(Optional.of(user));
-
         User result = userService.findById(1L);
-
         assertEquals(1L, result.getId());
         verify(userRepository, times(1)).findById("1");
     }
@@ -56,9 +49,7 @@ public class UserServiceImplTest {
     @Test
     public void testDeleteById() {
         Long userId = 1L;
-
         userService.deleteById(userId);
-
         verify(userRepository, times(1)).deleteById("1");
     }
 }

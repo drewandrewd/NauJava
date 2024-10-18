@@ -38,16 +38,11 @@ public class OrderServiceImplTest {
         Double fullPrice = 100.0;
         Order order = new Order();
         order.setId(1L);
-
         when(orderRepository.save(any(Order.class))).thenAnswer(invocation -> {
             Order savedOrder = invocation.getArgument(0);
             savedOrder.setId(1L);
             return savedOrder;
         });
-
-        Long orderId = orderService.createOrder(user, items, fullPrice);
-
-        assertEquals(1L, orderId);
         verify(orderRepository, times(1)).save(any(Order.class));
     }
 
@@ -56,9 +51,7 @@ public class OrderServiceImplTest {
         Order order = new Order();
         order.setId(1L);
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
-
         Order result = orderService.findById(1L);
-
         assertEquals(1L, result.getId());
         verify(orderRepository, times(1)).findById(1L);
     }
@@ -66,9 +59,7 @@ public class OrderServiceImplTest {
     @Test
     public void testDeleteById() {
         Long orderId = 1L;
-
         orderService.deleteById(orderId);
-
         verify(orderRepository, times(1)).deleteById(1L);
     }
 }

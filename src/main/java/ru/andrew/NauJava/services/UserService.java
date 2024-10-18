@@ -6,7 +6,7 @@ import ru.andrew.NauJava.models.User;
 import java.util.List;
 
 public interface UserService {
-    String createUser(String userName);
+    void createUser(String userName);
     User findById(Long id);
     void deleteById(Long id);
 }
