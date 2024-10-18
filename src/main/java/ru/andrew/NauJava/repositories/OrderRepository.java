@@ -1,39 +1,19 @@
 package ru.andrew.NauJava.repositories;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.data.repository.CrudRepository;
 import ru.andrew.NauJava.models.Order;
 
-import java.util.Map;
+import java.util.Optional;
 
-@Component
-public class OrderRepository implements CrudRepository<Order, Long> {
+public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    private final Map<Long, Order> orders;
-
-    @Autowired
-    public OrderRepository(Map<Long, Order> orders) {
-        this.orders = orders;
-    }
 
     @Override
-    public Long create(Order order) {
-        orders.put(order.getId(), order);
-        return order.getId();
-    }
+    <S extends Order> S save(S entity);
 
     @Override
-    public Order read(Long id) {
-        return orders.get(id);
-    }
+    Optional<Order> findById(Long aLong);
 
     @Override
-    public void update(Order order, Long id) {
-        orders.replace(id, order);
-    }
-
-    @Override
-    public void delete(Long id) {
-        orders.remove(id);
-    }
+    void deleteById(Long aLong);
 }

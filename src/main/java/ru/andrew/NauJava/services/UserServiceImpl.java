@@ -6,6 +6,7 @@ import ru.andrew.NauJava.models.User;
 import ru.andrew.NauJava.repositories.UserRepository;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,21 +19,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String createUser(String userName) {
+    public void createUser(String userName) {
         User user = new User();
         user.setName(userName);
-        user.setId(new Random().nextLong() >>> 1);
-        userRepository.create(user);
-        return user.getName();
+        userRepository.save(user);
     }
 
     @Override
-    public User findByName(String name) {
-        return userRepository.read(name);
+    public User findById(Long id) {
+        return userRepository.findById(String.valueOf(id)).orElse(new User());
     }
 
     @Override
-    public void deleteByName(String name) {
-        userRepository.delete(name);
+    public void deleteById(Long id) {
+        userRepository.deleteById(String.valueOf(id));
     }
 }

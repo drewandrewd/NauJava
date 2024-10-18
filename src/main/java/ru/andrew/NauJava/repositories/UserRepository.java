@@ -1,49 +1,17 @@
 package ru.andrew.NauJava.repositories;
 
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import ru.andrew.NauJava.models.Item;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.andrew.NauJava.models.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-@Component
-public class UserRepository implements CrudRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, String> {
 
-    private final Map<String, User> users;
-
-    @Autowired
-    public UserRepository(Map<String, User> users) {
-        this.users = users;
-    }
-
-    @PostConstruct
-    public void init() {
-        users.put("admin", new User(1L, "admin"));
-    }
+    @Query("SELECT u FROM User WHERE u.id =:id")
+    Optional<User> findById(@Param("id") String s);
 
     @Override
-    public String create(User user) {
-        users.put(user.getName(), user);
-        return user.getName();
-    }
-
-    @Override
-    public User read(String name) {
-        return users.get(name);
-    }
-
-    @Override
-    public void update(User user, String name) {
-        users.replace(name, user);
-    }
-
-    @Override
-    public void delete(String name) {
-        users.remove(name);
-    }
-
+    void deleteById(String s);
 }
