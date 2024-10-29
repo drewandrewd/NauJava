@@ -13,15 +13,16 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(java.lang.Exception.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Exception handleAllExceptions(Exception e) {
-        return Exception.create(e.getMessage());
+    public ErrorResponse handleAllExceptions(Exception e) {
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Exception handleResourceNotFound(ResourceNotFoundException e) {
-        return Exception.create(e.getMessage());
+    public ErrorResponse handleResourceNotFound(ResourceNotFoundException e) {
+        return new ErrorResponse(e.getMessage());
     }
 }
+
 
