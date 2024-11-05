@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Отчет</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1>Отчет</h1>
+<div th:if="${report}">
+  <h2>Содержимое отчета:</h2>
+  <div th:utext="${report.content}"></div>
+  <p><strong>Статус:</strong> <span th:text="${report.status}"></span></p>
+</div>
+<div th:if="${!report}">
+  <p>Отчет не найден.</p>
+</div>
+</body>
+</html>

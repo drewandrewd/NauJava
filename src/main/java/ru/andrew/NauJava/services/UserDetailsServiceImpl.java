@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import ru.andrew.NauJava.repositories.UserRepository;
 
@@ -35,6 +36,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByName(username)
+                .map(user -> new User(
+                        user.getName(),
+                        user.getPassword(),
+                        user.getAuthorities())) // Предполагается, что у вас есть метод getAuthorities()
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь с именем '" + username + "' не найден"));
     }
 }
