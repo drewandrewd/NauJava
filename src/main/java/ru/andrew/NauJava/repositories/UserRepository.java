@@ -8,12 +8,35 @@ import ru.andrew.NauJava.models.User;
 
 import java.util.Optional;
 
+/**
+ * Репозиторий для работы с сущностями {@link User}.
+ * Предоставляет методы для выполнения операций с пользователями в базе данных.
+ */
 @RepositoryRestResource
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
+    /**
+     * Находит пользователя по его идентификатору.
+     *
+     * @param id идентификатор пользователя
+     * @return {@link Optional} с найденным пользователем, если такой существует; иначе пустой {@link Optional}
+     */
     @Query("SELECT u FROM User u WHERE u.id = :id")
-    Optional<User> findById(@Param("id") String s);
+    Optional<User> findById(@Param("id") Long s);
 
+    /**
+     * Удаляет пользователя по его идентификатору.
+     *
+     * @param id идентификатор пользователя, которого нужно удалить
+     */
     @Override
-    void deleteById(String s);
+    void deleteById(Long s);
+
+    /**
+     * Находит пользователя по его имени.
+     *
+     * @param name имя пользователя
+     * @return {@link Optional} с найденным пользователем, если такой существует; иначе пустой {@link Optional}
+     */
+    Optional<User> findByName(String name);
 }
