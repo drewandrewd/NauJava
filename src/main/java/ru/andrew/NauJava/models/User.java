@@ -1,16 +1,6 @@
 package ru.andrew.NauJava.models;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +15,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+/**
+ * Представляет пользователя в системе.
+ * Реализует интерфейс {@link UserDetails} для интеграции с механизмами безопасности Spring.
+ */
 @Data
 @ToString
 @AllArgsConstructor
@@ -34,19 +27,34 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 public class User implements UserDetails {
 
+    /**
+     * Уникальный идентификатор пользователя.
+     */
     @Id
     @GeneratedValue
     private Long id;
 
+    /**
+     * Имя пользователя, используемое для аутентификации.
+     */
     @Column
     private String name;
 
+    /**
+     * Пароль пользователя, используемый для аутентификации.
+     */
     @Column
     private String password;
 
+    /**
+     * Заказы, связанные с пользователем.
+     */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
 
+    /**
+     * Роли, назначенные пользователю.
+     */
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_roles",
@@ -55,6 +63,11 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
+    /**
+     * Возвращает коллекцию полномочий пользователя на основе его ролей.
+     *
+     * @return коллекция полномочий
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -62,31 +75,61 @@ public class User implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Возвращает пароль пользователя.
+     *
+     * @return пароль пользователя
+     */
     @Override
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Возвращает имя пользователя.
+     *
+     * @return имя пользователя
+     */
     @Override
     public String getUsername() {
         return name;
     }
 
+    /**
+     * Проверяет, не истек ли срок действия учетной записи.
+     *
+     * @return true, если срок действия не истек, иначе false
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * Проверяет, не заблокирована ли учетная запись.
+     *
+     * @return true, если учетная запись не заблокирована, иначе false
+     */
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    /**
+     * Проверяет, не истек ли срок действия учетных данных.
+     *
+     * @return true, если срок действия учетных данных не истек, иначе false
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    /**
+     * Проверяет, активна ли учетная запись.
+     *
+     * @return true, если учетная запись активна, иначе false
+     */
     @Override
     public boolean isEnabled() {
         return true;

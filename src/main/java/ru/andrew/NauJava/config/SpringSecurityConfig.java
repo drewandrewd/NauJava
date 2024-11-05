@@ -7,25 +7,38 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.andrew.NauJava.services.CustomUserDetailService;
+import ru.andrew.NauJava.services.UserDetailsServiceImpl;
 
+/**
+ * Конфигурация безопасности Spring для приложения.
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
 
     @Autowired
-    CustomUserDetailService customUserDetailService;
+    UserDetailsServiceImpl customUserDetailService;
 
+    /**
+     * Создает экземпляр PasswordEncoder для шифрования паролей.
+     *
+     * @return объект PasswordEncoder
+     */
     @Bean
-    public PasswordEncoder getPasswordEncoder()
-    {
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Настраивает цепочку фильтров безопасности.
+     *
+     * @param http объект HttpSecurity для настройки безопасности
+     * @return настроенная цепочка фильтров безопасности
+     * @throws Exception если происходит ошибка при настройке безопасности
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -48,6 +61,13 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
+    /**
+     * Настраивает AuthenticationManager для аутентификации пользователей.
+     *
+     * @param http объект HttpSecurity для настройки безопасности
+     * @return настроенный AuthenticationManager
+     * @throws Exception если происходит ошибка при настройке аутентификации
+     */
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =

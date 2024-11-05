@@ -9,6 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Представляет связь между товарами и заказами.
+ * Позволяет хранить количество каждого товара,
+ * включенного в конкретный заказ.
+ */
 @Entity
 @Table(name = "item_order_mapping")
 @AllArgsConstructor
@@ -16,15 +21,27 @@ import lombok.NoArgsConstructor;
 @Data
 public class ItemOrderMapping {
 
+    /**
+     * Уникальный идентификатор записи в связывающей таблице.
+     */
     @Id
     @GeneratedValue
     private Long id;
 
+    /**
+     * Товар, связанный с заказом.
+     */
     @ManyToOne
     private Item item;
 
+    /**
+     * Заказ, к которому относится данный товар.
+     */
     @ManyToOne
     private Order order;
 
+    /**
+     * Количество данного товара в заказе.
+     */
     private Integer quantity;
 }
